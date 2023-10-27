@@ -20,7 +20,7 @@ export default {
   created() {//responses die de server terug kan sturen
     WebSocketService.on("GetLobby", (message) => {
       console.log(`Lobby joined with id: ${message}`);
-            this.$router.push('/chat');
+            this.$router.push('/lobby');
 
     });
   },

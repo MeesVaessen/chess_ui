@@ -3,10 +3,6 @@
 </script>
 
 <template>
-    <div class="Chat">
-        <h1>Chat</h1>
-    </div>
-<br>
 <div class="chatbox">
         <div class="messages" ref="messages">
             <div v-for="(message, index) in messages" :key="index" :class="{ 'received-message': message.type === 'received', 'sent-message': message.type === 'sent' }">
@@ -67,20 +63,13 @@ export default {
 </script>
 
 <style scoped>
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f5f5f5;
-}
+
 
 .chatbox {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 400px; /* Set your desired fixed height for the chatbox */
+    height: 100%; /* Set your desired fixed height for the chatbox */
     width: 300px;
     background-color: #ffffff;
     border-radius: 8px;
