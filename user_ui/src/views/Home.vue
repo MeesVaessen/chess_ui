@@ -1,5 +1,7 @@
 <script setup>
     import WebSocketService from "@/services/WebSocketService.js";
+    import Login from '../components/Login.vue'
+
 </script>
 
 <template>
@@ -7,7 +9,8 @@
         <h1>Home</h1>
     </div>
 
-    <div>
+  <div>
+    <Login></Login>
     <input v-model="userName"  placeholder="Name" />
     <button @click="joinLobby">Join Lobby</button>
   </div>

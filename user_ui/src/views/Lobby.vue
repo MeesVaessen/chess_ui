@@ -9,19 +9,27 @@ let boardApi;
 const playerColor = 'white';
 
 // Recieve move from socket/server/etc here.
-function onRecieveMove(move) {
-  boardApi?.move(move);
+function handleMove(move) {
+  console.log(move["from"],move["to"]);
+  const Move = move["from"] + move["to"];
+  WebSocketService.invoke("SendMove", Move);
+}
+
+function recieveMove(){
+  boardApi?.move("b2b4")
+  console.log("test");
 }
 </script>
 
 <template>
     <div class="Container">
       <div class="Board">
-        <TheChessboard :player-color="playerColor" @board-created="(api) => (boardApi = api)"></TheChessboard>
+        <TheChessboard :player-color="playerColor" @board-created="(api) => (boardApi = api)" @move="handleMove"></TheChessboard>
       </div>
       <div class="Chat">
         <chat></chat>
       </div>
+      <button @click="recieveMove()"></button>
     </div>
   </template>
   
