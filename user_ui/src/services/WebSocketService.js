@@ -1,7 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 
 const connection = new signalR.HubConnectionBuilder()
-  .withUrl("https://localhost:7019/game")
+  .withUrl("https://localhost:7080/game")
   .build();
 
 connection.start().then(() => {
