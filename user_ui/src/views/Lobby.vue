@@ -3,7 +3,8 @@ import { TheChessboard } from 'vue3-chessboard';
 import 'vue3-chessboard/style.css';
 import chat from '../components/Chat.vue'
 import WebSocketService from "@/services/WebSocketService.js";
-import axios from 'axios';
+import { parseJwt } from '../services/JWTParse';
+import { fetchData } from '../services/APIService';
 
 </script>
 
@@ -38,38 +39,22 @@ import axios from 'axios';
     },
     methods: {
         handleMove(move) {
-          console.log(move["from"],move["to"]);
           const Move = move["from"] + move["to"];
           const GameGuid = this.$route.query.GUID;
           WebSocketService.invoke("SendMove", Move,GameGuid);
         },
-        parseJwt(token) {
-          const base64Url = token.split('.')[1];
-          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-          }).join(''));
-          return JSON.parse(jsonPayload);
-      },
-      JoinGame() {
-        const apiUrl = 'https://localhost:7080/Game/GetPlayerColor';
-        const decodedToken = this.parseJwt(localStorage.getItem('JWT-Auth'));
+       async JoinGame() {
+        const decodedToken = parseJwt(localStorage.getItem('JWT-Auth'));
         const GameGuid = this.$route.query.GUID;
-        axios.post(apiUrl, { userID: decodedToken["UserID"], guid: GameGuid },{
-          headers : {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+localStorage.getItem('JWT-Auth')
-          }
-          }).then(response => {
-            console.log(response.data)
-            this.playerColor = response.data['color']
-
-           WebSocketService.invoke("JoinLobby",GameGuid);
-          })
-          .catch(error => {
-              // Handle errors
-              console.error('Error:', error);
-          });
+        try {
+          const responseData = await fetchData("/game/"+GameGuid+"/get/"+decodedToken["UserID"]+"/color")
+          console.log(responseData);
+          this.playerColor = responseData['color']
+          WebSocketService.invoke("JoinLobby",GameGuid);
+        } 
+        catch (error) {
+          console.error('Error:', error);
+        }
       }
   
     },

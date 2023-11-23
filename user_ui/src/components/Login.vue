@@ -11,29 +11,22 @@
   
 <script>
 import {decodeCredential,googleLogout} from 'vue3-google-login'
-import axios from 'axios';
-const apiUrl = 'https://localhost:7080/Authentication/login';
+import { postData } from '../services/AuthAPIService';
 
 export default{
-  data(){
-    return {
-
+     data(){
+     return {
         loggedIn: localStorage.getItem('JWT-Auth') !== null,
-        user:null,
+        callback:async (response)=>{
+            try {
+                var credential = decodeCredential(response.credential);
+                const responseData = await postData("/Authentication/login", { name: credential['name'],guid: credential['sub'] })
+                localStorage.setItem('JWT-Auth', responseData["token"] );
+                this.loggedIn = true; 
 
-        callback:(response)=>{
-            var credential = decodeCredential(response.credential);
-            axios.post(apiUrl, { name: credential['name'],guid: credential['sub'] },{
-                headers : {'Content-Type': 'application/json'}
-            }).then(response => {
-                    // Handle the API response
-                    this.loggedIn = true;
-                    localStorage.setItem('JWT-Auth', response.data["token"] );
-                })
-                .catch(error => {
-                    // Handle errors
-                    console.error('Error:', error);
-                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
     }
   },
@@ -42,7 +35,6 @@ export default{
         googleLogout();
         this.loggedIn = false;
         localStorage.removeItem('JWT-Auth');
-
     }
   }
 }
