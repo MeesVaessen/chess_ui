@@ -4,7 +4,7 @@
             <button @click="Logout">Logout</button>
         </div>
         <div v-else>
-            <GoogleLogin :callback="callback" prompt auto-login> </GoogleLogin>
+            <GoogleLogin :callback="callback" prompt auto-login id="GoogleLogin"> </GoogleLogin>
         </div>
     </template>
 

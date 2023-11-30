@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -13,6 +13,7 @@
     "@microsoft/signalr": "^7.0.11",
     "@publishvue/vuechessground": "^2.0.80",
     "axios": "^1.6.0",
+    "cypress-social-logins": "^1.14.1",
     "jQuery": "^1.7.4",
     "jsdom": "^22.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
+    "cypress": "^13.6.0",
     "vite": "^4.4.5"
   }
 }

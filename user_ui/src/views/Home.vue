@@ -10,7 +10,7 @@ import { parseJwt } from '../services/JWTParse';
     </div>
   <div>
     <Login></Login>
-    <button @click="JoinGame()">Play Game</button>
+    <button @click="JoinGame()" id='PlayGameButton'>Play Game</button>
   </div>
 </template> 
 
@@ -21,11 +21,12 @@ import { parseJwt } from '../services/JWTParse';
       async JoinGame() {
         try {
           const decodedToken = parseJwt(localStorage.getItem('JWT-Auth'));
-          console.log(decodedToken)
           const responseData = await postData("/game/join", { userID: decodedToken["UserID"] })
+          console.log(responseData)
           this.$router.push('/lobby?GUID='+responseData["guid"]);
         } 
         catch (error) {
+          console.log(error)
           console.error('Error:', error);
         }
       }
